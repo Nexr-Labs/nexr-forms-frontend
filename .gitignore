@@ -1,0 +1,11 @@
+# Node specific
+node_modules/
+dist/
+dist-ssr/
+npm-debug.log*
+*.local
+.env
+
+# Editor & OS
+.vscode/
+.DS_Store
