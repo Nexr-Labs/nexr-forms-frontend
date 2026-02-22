@@ -1,6 +1,6 @@
 import { EventData, EventField, EventStatus, FieldType, Registration, User, AuthResponse, DashboardStats } from '../types';
 
-// Helper to separate API URL logic
+/*// Helper to separate API URL logic
 const getApiUrl = () => {
   // Use Vite environment variables
   let url = import.meta.env.VITE_API_URL;
@@ -22,11 +22,25 @@ const getApiUrl = () => {
   }
 
   return url;
+};*/
+// Force the new backend URL regardless of what 'url' says
+// 1. Unified URL Logic
+const getBaseUrl = () => {
+  // Use local backend if running in development mode
+  if (import.meta.env.DEV) {
+    return 'http://127.0.0.1:8000/api';
+  }
+  // Use Vercel backend for production
+  return 'https://nexr-forms-backend.vercel.app/api';
 };
 
-const API_URL = getApiUrl();
+// 2. Set the single constant that the rest of your app uses
+const API_URL = getBaseUrl();
+
+// 3. Log it so you can verify in the browser console
 console.log('EventFlow Configured API URL:', API_URL);
 
+// 4. Headers configuration
 const getHeaders = () => {
   const token = localStorage.getItem('eventflow_token');
   return {
@@ -34,7 +48,6 @@ const getHeaders = () => {
     'Authorization': token ? `Bearer ${token}` : ''
   };
 };
-
 // --- AUTH SERVICE ---
 
 export const login = async (email: string, password: string): Promise<AuthResponse> => {
