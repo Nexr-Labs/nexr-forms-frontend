@@ -2,13 +2,15 @@ import { EventData, EventField, EventStatus, FieldType, Registration, User, Auth
 
 // Helper to separate API URL logic
 const getApiUrl = () => {
-  let url = process.env.NEXT_PUBLIC_API_URL;
+  // Use Vite environment variables
+  let url = import.meta.env.VITE_API_URL;
 
   if (!url) {
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.DEV) {
       return 'http://127.0.0.1:8000/api';
     }
-    return 'https://nexr-forms.onrender.com/api';
+    // New default for production
+    return 'https://nexr-forms-backend.vercel.app/api';
   }
 
   // Ensure url does not end with slash
